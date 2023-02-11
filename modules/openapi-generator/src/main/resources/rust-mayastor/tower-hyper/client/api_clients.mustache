@@ -222,9 +222,12 @@ impl {{{classname}}} for {{{classname}}}Client {
         {{/hasBodyParam}}
         let request = local_var_req_builder.uri(local_var_uri_str).header("content-type", "application/json").body(body).map_err(RequestError::BuildRequest)?;
 
+        let mut local_var_resp_clone = {
+            configuration.client_service.lock().await.clone()
+        };
+
         let local_var_resp = {
-            let mut client_service = configuration.client_service.lock().await.clone();
-            client_service
+            local_var_resp_clone
                 .ready()
                 .await
                 .map_err(RequestError::NotReady)?
