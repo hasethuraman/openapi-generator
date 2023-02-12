@@ -8,6 +8,8 @@ use hyper::service::Service;
 use std::sync::Arc;
 use tower::ServiceExt;
 
+use tracing;
+
 pub struct {{{classname}}}Client {
     configuration: Arc<configuration::Configuration>,
 }
