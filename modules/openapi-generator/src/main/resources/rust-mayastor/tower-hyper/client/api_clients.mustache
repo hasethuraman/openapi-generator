@@ -226,7 +226,7 @@ impl {{{classname}}} for {{{classname}}}Client {
 
         let local_var_resp = {
             let mut client_service = configuration.client_service.lock().await.clone();
-            tracing::info!("Getting volume for {}", local_var_uri_str);
+            tracing::info!("{{operationId}} for {}", local_var_uri_str);
             let result = client_service
                 .ready()
                 .await
@@ -234,7 +234,7 @@ impl {{{classname}}} for {{{classname}}}Client {
                 .call(request)
                 .await
                 .map_err(RequestError::Request);
-            tracing::info!("Recieved volume for {}", local_var_uri_str);
+            tracing::info!("Done {{operationId}} for {}", local_var_uri_str);
             result
         };
         let local_var_status = local_var_resp.status();
