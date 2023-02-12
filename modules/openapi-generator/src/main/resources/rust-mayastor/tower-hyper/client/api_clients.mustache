@@ -233,9 +233,9 @@ impl {{{classname}}} for {{{classname}}}Client {
                 .map_err(RequestError::NotReady)?
                 .call(request)
                 .await
-                .map_err(RequestError::Request);
+                .map_err(RequestError::Request)?;
             tracing::info!("Done {{operationId}} for {}", local_var_uri_str);
-            Ok(result)
+            result
         };
         let local_var_status = local_var_resp.status();
         
