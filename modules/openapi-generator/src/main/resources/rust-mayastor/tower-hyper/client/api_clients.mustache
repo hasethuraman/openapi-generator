@@ -235,7 +235,7 @@ impl {{{classname}}} for {{{classname}}}Client {
                 .await
                 .map_err(RequestError::Request);
             tracing::info!("Done {{operationId}} for {}", local_var_uri_str);
-            result
+            Ok(result)
         };
         let local_var_status = local_var_resp.status();
         
