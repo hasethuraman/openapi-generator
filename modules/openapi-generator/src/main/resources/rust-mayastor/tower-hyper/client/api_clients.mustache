@@ -222,18 +222,18 @@ impl {{{classname}}} for {{{classname}}}Client {
         {{/hasBodyParam}}
         let request = local_var_req_builder.uri(local_var_uri_str).header("content-type", "application/json").body(body).map_err(RequestError::BuildRequest)?;
 
-        let mut local_var_resp_clone = {
-            configuration.client_service.lock().await.clone()
-        };
-
         let local_var_resp = {
-            local_var_resp_clone
+            let mut client_service = configuration.client_service.lock().await.clone();
+            tracing::info!("Getting volume for {}", local_var_uri_str);
+            let result = client_service
                 .ready()
                 .await
                 .map_err(RequestError::NotReady)?
                 .call(request)
                 .await
-                .map_err(RequestError::Request)?
+                .map_err(RequestError::Request);
+            tracing::info!("Recieved volume for {}", local_var_uri_str);
+            result
         };
         let local_var_status = local_var_resp.status();
         
