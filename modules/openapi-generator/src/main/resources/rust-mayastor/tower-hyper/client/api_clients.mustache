@@ -229,7 +229,7 @@ impl {{{classname}}} for {{{classname}}}Client {
         let local_var_resp = {
             tracing::info!("Invoking REST {{operationId}} {}", local_var_uri_str.to_string());
             let mut client_service = configuration.client_service.lock().await.clone();
-            tracing::info!("Invoking REST {{operationId}} {} - LA", local_var_uri_str.to_string());
+            tracing::info!("Invoking REST {{operationId}} {} - LA1", local_var_uri_str.to_string());
             let result = client_service
                 .ready()
                 .await
