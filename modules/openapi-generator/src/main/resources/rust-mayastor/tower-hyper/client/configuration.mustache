@@ -309,6 +309,7 @@ impl Configuration {
                         .root_store
                         .add_pem_file(cert_file)
                         .map_err(|_| Error::Certificate)?;
+                    config.alpn_protocols = vec![b"h2".to_vec()];
 
                     let mut http = hyper::client::HttpConnector::new();
                     http.enforce_http(false);
