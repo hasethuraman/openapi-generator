@@ -237,7 +237,7 @@ impl {{{classname}}} for {{{classname}}}Client {
             match result {
                 Ok(r) => {
                     tracing::info!("Invoked REST {{operationId}} {} SUCCESS", local_var_uri_str.to_string());
-                    Ok(r)
+                    r
                 },
                 Err(e) => {
                     tracing::info!("Invoked REST {{operationId}} {} ERROR {:?}", local_var_uri_str.to_string(), e);
