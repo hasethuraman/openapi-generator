@@ -8,6 +8,8 @@ use hyper::service::Service;
 use std::sync::Arc;
 use tower::ServiceExt;
 
+use tracing;
+
 pub struct {{{classname}}}Client {
     configuration: Arc<configuration::Configuration>,
 }
@@ -220,17 +222,28 @@ impl {{{classname}}} for {{{classname}}}Client {
         {{^hasBodyParam}}
         let body = hyper::Body::empty();
         {{/hasBodyParam}}
-        let request = local_var_req_builder.uri(local_var_uri_str).header("content-type", "application/json").body(body).map_err(RequestError::BuildRequest)?;
+        let request = local_var_req_builder.uri(local_var_uri_str.to_string()).header("content-type", "application/json").body(body).map_err(RequestError::BuildRequest)?;
 
         let local_var_resp = {
+            tracing::info!("Invoking REST {{operationId}} {}", local_var_uri_str.to_string());
             let mut client_service = configuration.client_service.lock().await.clone();
-            client_service
+            let result = client_service
                 .ready()
                 .await
                 .map_err(RequestError::NotReady)?
                 .call(request)
                 .await
-                .map_err(RequestError::Request)?
+                .map_err(RequestError::Request);
+            match result {
+                Ok(r) => {
+                    tracing::info!("Invoked REST {{operationId}} {} SUCCESS", local_var_uri_str.to_string());
+                    Ok(r)
+                },
+                Err(e) => {
+                    tracing::info!("Invoked REST {{operationId}} {} ERROR {:?}", local_var_uri_str.to_string(), e);
+                    return Err(From::from(e))
+                },
+            }
         };
         let local_var_status = local_var_resp.status();
         
