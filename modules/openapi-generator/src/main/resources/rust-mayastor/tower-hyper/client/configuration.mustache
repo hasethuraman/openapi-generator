@@ -296,6 +296,7 @@ impl Configuration {
                                 DisableServerCertVerifier {},
                             ));
                     }
+                    tls.alpn_protocols = vec![b"h2".to_vec()];
 
                     let connector =
                         hyper_rustls::HttpsConnector::from((http, std::sync::Arc::new(tls)));
